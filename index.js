@@ -8,6 +8,10 @@ const port = 8000;
 // use express router for home
 app.use('/', require('./routes'));
 
+// set up the view engine as ejs
+app.set('view engine','ejs');
+app.set('views','./views');
+
 // 3) Running the express server on defined port
 app.listen(port,function(err){
     if(err){
