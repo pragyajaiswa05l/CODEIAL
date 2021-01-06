@@ -13,6 +13,8 @@ const port = 8000;
 const expressLayouts = require('express-ejs-layouts');
 app.use(expressLayouts);
 
+// require the mongoose library/modules
+ const db = require('./config/mongoose');
 
 // setting up static files access
 app.use(express.static('./assets'));
