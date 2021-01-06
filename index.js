@@ -1,14 +1,23 @@
 // 1) Import the express module
+
+//This means that the value of a variable declared with const remains the same within its scope. It cannot be updated or re-declared. 
 const express = require('express');
+
+//The app object conventionally denotes the Express application. Create it by calling  express() function exported by the Express module:
 const app = express();
 
 // 2) defining port no.
 const port = 8000;
 
+// import the express layouts
+const expressLayouts = require('express-ejs-layouts');
+app.use(expressLayouts);
+
 // use express router for home
 app.use('/', require('./routes'));
 
 // set up the view engine as ejs
+//Express uses jade as its default template engine,so we would have to tell it to use ejs instead 
 app.set('view engine','ejs');
 app.set('views','./views');
 
