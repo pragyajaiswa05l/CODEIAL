@@ -3,6 +3,9 @@
 //This means that the value of a variable declared with const remains the same within its scope. It cannot be updated or re-declared. 
 const express = require('express');
 
+// require the cookie parser to use 
+const cookieParser = require('cookie-parser');
+
 //The app object conventionally denotes the Express application. Create it by calling  express() function exported by the Express module:
 const app = express();
 
@@ -15,6 +18,12 @@ app.use(expressLayouts);
 
 // require the mongoose library/modules
  const db = require('./config/mongoose');
+
+ //reading through the post request
+ app.use(express.urlencoded());
+
+ //setting up the cookie
+ app.use(cookieParser());
 
 // setting up static files access
 app.use(express.static('./assets'));
