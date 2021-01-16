@@ -25,7 +25,7 @@ app.use(expressLayouts);
  //setting up the cookie
  app.use(cookieParser());
 
-// setting up static files access
+// setting up static files access(Then we define the directory from which to serve our static files.)
 app.use(express.static('./assets'));
 
 
