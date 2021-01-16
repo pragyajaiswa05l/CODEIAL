@@ -19,6 +19,14 @@ app.use(expressLayouts);
 // require the mongoose library/modules
  const db = require('./config/mongoose');
 
+
+ //used for session cookie
+ const session = require('express-session');
+
+ const passport = require('passport');
+
+ const passportLocal = require('./config/passport-local-strategy');
+
  //reading through the post request
  app.use(express.urlencoded());
 
@@ -35,13 +43,28 @@ app.set('layout extractScripts',true);
 
 
 
-// use express router for home
-app.use('/', require('./routes'));
-
 // set up the view engine as ejs
 //Express uses jade as its default template engine,so we would have to tell it to use ejs instead 
 app.set('view engine','ejs');
 app.set('views','./views');
+
+
+app.use(session({
+    name :'codeial',
+    //todo change the secret before deployment in production mode
+    secret:'blahsomething',
+    saveUninitialized:false,
+    resave:false,
+    cookie:{
+        maxAge:(1000 * 60 * 100)
+    }
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// use express router for home
+app.use('/', require('./routes'));
 
 // 3) Running the express server on defined port
 app.listen(port,function(err){
