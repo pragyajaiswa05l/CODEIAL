@@ -1,3 +1,6 @@
+// index.js is the entry point of all the routes(this)
+
+
 const express = require('express');
 
 const router = express.Router();
