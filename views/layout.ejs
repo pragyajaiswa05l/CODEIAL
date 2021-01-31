@@ -7,11 +7,17 @@
         <link rel="stylesheet" href="/css/header.css">
         <link rel="stylesheet" href="/css/footer.css">
 
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+
         <%- style %>
     </head>
     <body>
         <%- include('_header'); %>
-        <%- body %>
+
+        <main id="layout-main">
+            <%- body %>
+        </main>
         <%- include('_footer'); %>
         
         <%- script %>
