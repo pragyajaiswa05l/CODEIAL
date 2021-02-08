@@ -18,7 +18,17 @@ module.exports.home = function(req, res){
 
 
 //populate the user of each post
-Post.find({}).populate('user').exec(function(err,posts){
+Post.find({})
+.populate('user')
+
+//when we need to populate multiple models i.e we need to get the comment and the user of the comment
+.populate({
+    path: 'comments',
+    populate:{
+        path: 'user'
+    }
+})
+.exec(function(err,posts){
     return res.render('home',{
         title:"Codeial | Home",
         posts: posts
