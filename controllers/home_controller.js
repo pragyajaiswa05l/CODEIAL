@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const User = require('../models/user');
 
 
 
@@ -29,10 +30,16 @@ Post.find({})
     }
 })
 .exec(function(err,posts){
-    return res.render('home',{
-        title:"Codeial | Home",
-        posts: posts
+
+    //find all the users to display in home.ejs
+    User.find({}, function(err, users){
+        return res.render('home',{
+            title:"Codeial | Home",
+            posts: posts,
+            all_users: users
+        });
     });
+    
 });
 
 
