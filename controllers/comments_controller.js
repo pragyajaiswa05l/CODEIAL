@@ -27,3 +27,28 @@ module.exports.create = function(req,res){
         }
     });
 }
+
+
+//delete the comment
+module.exports.destroy = function(req,res){
+    //find the comment
+    Comment.findById(req.params.id,function(err,comment){
+        
+        if(comment.user == req.user.id){
+
+            //first save the postid then delete the comment
+            let postId = comment.post;
+            //delete the comment from the comment database
+            comment.remove();
+
+            //delete the comment from the post.pull out the comment id from the  list of comment
+            Post.findByIdAndUpdate(postId, { $pull: {comments:req.params.id}},function(err,post){
+                return res.redirect('back');
+            });
+        }
+        //if it doesn't match
+        else{
+            return res.redirect('back');
+        }
+    });
+}
