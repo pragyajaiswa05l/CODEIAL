@@ -31,6 +31,9 @@ app.use(expressLayouts);
 
  const sassMiddleware = require('node-sass-middleware');
 
+ const flash = require('connect-flash');
+ const customMware = require('./config/middleware');
+
 
 
 
@@ -88,6 +91,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
+
+//set the flash to be used
+app.use(flash());
+//to use the custom middleware made in config folder
+app.use(customMware.setFlash);
 
 // use express router for home
 app.use('/', require('./routes'));
