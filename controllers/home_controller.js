@@ -3,45 +3,48 @@ const User = require('../models/user');
 
 
 
-module.exports.home = function(req, res){
-    // return res.end('<h1>Express is up for Codeial!</h1>');
-
-    //console.log(req.cookies);
-   // res.cookie('user_id',25);
-
-   //this query will return all the post
-//    Post.find({},function(err,posts){
-//         return res.render('home',{
-//             title:"Codeial | Home",
-//             posts: posts
-//         });
-//    });
+module.exports.home = async function(req, res){
 
 
-//populate the user of each post
-Post.find({})
-.populate('user')
+    //to handle success and error 
+    try{
 
-//when we need to populate multiple models i.e we need to get the comment and the user of the comment
-.populate({
-    path: 'comments',
-    populate:{
-        path: 'user'
-    }
-})
-.exec(function(err,posts){
+        //populate the user of each post ,this query will return all the post
+        //awaited for this post to be completed
+        let posts = await Post.find({})
+        .populate('user')
 
-    //find all the users to display in home.ejs
-    User.find({}, function(err, users){
+        //when we need to populate multiple models i.e we need to get the comment and the user of the comment
+        .populate({
+            path: 'comments',
+            populate:{
+                path: 'user'
+            }
+        });
+
+
+        //find all the users to display in home.ejs
+        //we awaited for the user search query to be completed
+        let users = await User.find({});
+                
+        
+        //after the post and user then we return something to the browser
         return res.render('home',{
             title:"Codeial | Home",
             posts: posts,
             all_users: users
-        });
-    });
-    
-});
+        });    
 
+
+
+    }catch(err){
+
+        console.log('Error', err);
+        return;
+
+    }
+
+    
 
     
 }
