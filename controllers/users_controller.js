@@ -4,6 +4,7 @@ const User = require('../models/user');
 
 //render the user profile page
 
+//lets keep it same as before(i.e don't use async await for profile because there is no nesting level there is only one call back)
 module.exports.profile = function(req,res){
     //res.end('<h1>User Profile</h1>');
 

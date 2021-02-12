@@ -1,39 +1,49 @@
 const Post = require('../models/post');
 const Comment = require('../models/comment');
 
-module.exports.create = function(req , res){
-    Post.create({
-        content: req.body.content,
-        user: req.user._id
-    },function(err,post){
-        if(err){
-            console.log('error in creating a post');
-            return;
-        }
+module.exports.create = async function(req , res){
+    try{
+        await Post.create({
+            content: req.body.content,
+            user: req.user._id
+        });
         return res.redirect('back');
-    });
+        
+
+    }catch(err){
+        console.log('Error' ,err);
+        return;
+    }
+    
 }
 
-module.exports.destroy = function(req,res){
-    //find whether the post exist or not before deleting it
-    Post.findById(req.params.id, function(err,post){
+module.exports.destroy = async function(req,res){
+    try{
+
+        //find whether the post exist or not before deleting it
+        let post = await Post.findById(req.params.id);
+
+
         //.id means converting the object id into string
         //if post exist
         //check whether the user who is deleting the post is the same user who has written the post
         if(post.user == req.user.id){
-            //delete the post and the comment also from that post
-            post.remove();
+        //delete the post and the comment also from that post
+             post.remove();
 
-            Comment.deleteMany({post:req.params.id},function(err){
-                return res.redirect('back');
-            });
-
-
-    
+            await Comment.deleteMany({post:req.params.id});
+            return res.redirect('back');
+            
         }
         //if user didn't match
         else{
             return res.redirect('back');
         }
-    });
+
+    }
+    catch(err){
+        console.log('Error', err);
+        return;
+    }
+    
 }
