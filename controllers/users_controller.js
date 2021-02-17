@@ -22,10 +22,12 @@ module.exports.profile = function(req,res){
 module.exports.update = function(req,res){
     if(req.user.id == req.params.id){
         User.findByIdAndUpdate(req.params.id, req.body, function(err,user){
+            req.flash('success','Updated!');
             return res.redirect('back');
         });
     }else{
-            return res.status(401).send('Unauthorized');
+        req.flash('error','Unauthorized');
+        return res.status(401).send('Unauthorized');
     }
 }
 
@@ -60,20 +62,23 @@ module.exports.create = function(req,res){
 
     //check if password and confirm password are same or not 
     if (req.body.password != req.body.confirm_password){
+        req.flash('error', 'Passwords do not match');
         return res.redirect('back'); //go the same page it came from
     }
 
     //if the user doesn't exit create it
     User.findOne({email: req.body.email},function(err,user){
         if(err){
-            console.log('error in finding user in signing up');
+            //console.log('error in finding user in signing up');
+            req.flash('error', err);
             return;
         }
 
         if(!user){
             User.create(req.body , function(err,user){
                 if(err){
-                    console.log('error in creating user while signing up');
+                    //console.log('error in creating user while signing up');
+                    req.flash('error', err);
                     return;
                 } 
                 return res.redirect('/users/sign-in'); 
@@ -82,6 +87,7 @@ module.exports.create = function(req,res){
 
         //if user already exist
         else{
+            req.flash('success', 'You have signed up, login to continue!');
             return res.redirect('back');
         }
     });

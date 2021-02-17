@@ -21,6 +21,7 @@ module.exports.create = async function(req,res){
 
             //get saved in the database
             post.save();
+            req.flash('success','Comment published!');
 
             res.redirect('/');
         
@@ -28,7 +29,8 @@ module.exports.create = async function(req,res){
 
     }
     catch(err){
-        console.log('Error',err);
+        //console.log('Error',err);
+        req.flash('error',err);
         return;
     }
 
@@ -54,17 +56,20 @@ module.exports.destroy = async function(req,res){
 
             //delete the comment from the post.pull out the comment id from the  list of comment
             let post = await Post.findByIdAndUpdate(postId, { $pull: {comments:req.params.id}});
+            req.flash('success','Comment deleted!');
             return res.redirect('back');
             
         }
         //if it doesn't match
         else{
+            req.flash('error','Unauthorized');
             return res.redirect('back');
         }
 
     }catch(err){
 
-        console.log('Error' , err);
+        //console.log('Error' , err);
+        req.flash('error',err);
         return;
     }
     
