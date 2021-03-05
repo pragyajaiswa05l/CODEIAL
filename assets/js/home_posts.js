@@ -23,6 +23,7 @@
                 success : function(data){
                    let newPost = newPostDom(data.data.post);
                    $('#posts-list-container>ul').prepend(newPost);
+                   deletePost($(' .delete-post-button',newPost));
                 },error: function(error){
                     console.log(error.responseText);
                 }
@@ -68,6 +69,35 @@
                 
          </li>`)
     }
+
+    //method to delete a post from DOM(this function will be sending the AJAX request)
+    let deletePost = function(deleteLink){
+        $(deleteLink).click(function(e){
+            e.preventDefault();
+
+            $.ajax({
+                type: 'get',
+                url: $(deleteLink).prop('href'), // this is how we get the value of href of a tag
+                success: function(data){
+                    $(`#post-${data.data.post_id}`).remove();
+
+                },error: function(error){
+                    console.log(error.responseText);
+                }
+            });
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     createPost();
 }

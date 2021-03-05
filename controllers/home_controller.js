@@ -12,6 +12,7 @@ module.exports.home = async function(req, res){
         //populate the user of each post ,this query will return all the post
         //awaited for this post to be completed
         let posts = await Post.find({})
+        .sort('-createdAt')
         .populate('user')
 
         //when we need to populate multiple models i.e we need to get the comment and the user of the comment
