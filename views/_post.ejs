@@ -3,7 +3,7 @@
         <!-- if user is signed in and the user who is signed in is same as user who created the post -->
         <% if(locals.user && locals.user.id == post.user.id){%>
         <small>
-            <a class="delete-post-button" href="/posts/destroy/<%= post.id %>">x</a>
+            <a class="delete-post-button" href="/posts/destroy/<%= post.id %>">X</a>
         </small>
         <%}%>
         <%= post.content %>
