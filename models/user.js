@@ -23,12 +23,30 @@ const userSchema = new mongoose.Schema({
     name: {
         type:String,
         required:true
+    },
+    avatar: {
+        type:string
     }
 },{
     timestamps: true
 
 
 });
+
+// defining a storage
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) { //cb ->callback
+      cb(null, path.join(__dirname, '..',AVATAR_PATH)); // the exact path where the file need to be stored
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now())
+    }
+  })
+
+
+
+
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
