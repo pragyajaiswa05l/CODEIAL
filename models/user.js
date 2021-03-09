@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
         required:true
     },
     avatar: {
-        type:string
+        type:String
     }
 },{
     timestamps: true
@@ -39,9 +39,15 @@ let storage = multer.diskStorage({
       cb(null, path.join(__dirname, '..',AVATAR_PATH)); // the exact path where the file need to be stored
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now())
+      cb(null, file.fieldname + '-' + Date.now());
     }
-  })
+  });
+
+
+
+  //static methods
+  userSchema.statics.uploadedAvatar = multer({storage: storage}).single('avatar');
+  userSchema.statics.avatarPath = AVATAR_PATH; // to be available publically for user model
 
 
 
