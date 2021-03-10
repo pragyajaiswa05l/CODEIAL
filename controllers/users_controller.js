@@ -1,5 +1,7 @@
 //to use the schema
 const User = require('../models/user');
+const fs = require('fs');
+const path = require('path');
 
 
 //render the user profile page
@@ -41,6 +43,9 @@ module.exports.update =  async function(req,res){
                     console.log('*******Multer Error: ',err);
                 }
                 //console.log(req.file);
+                //Multer adds a body object and file object to the request object. 
+                //body object contains the values of the text fields of the form.
+                //file object contains the files uploaded via the form.
                 user.name = req.body.name;
                 user.email = req.body.email;
 
@@ -48,9 +53,23 @@ module.exports.update =  async function(req,res){
                 
                 //if request has a file
                 if(req.file){
+                    //if user already have an avatar associated with him /her
+                    if(user.avatar){
+                        //if the file of that avatar exists
+                        if(fs.existsSync(path.join(__dirname,"..",user.avatar))){
+                            //deleting the file (old avatar)
+                            fs.unlinkSync(path.join(__dirname,"..",user.avatar));
+                        }
+                    }
+                    
+
+
+
+
                     //this is saving the path of the uploaded file into the avatar field in the user
                     user.avatar = User.avatarPath + '/' + req.file.filename
                 }
+                //saving user
                 user.save();
                 return res.redirect('back');
             });
@@ -74,7 +93,7 @@ module.exports.update =  async function(req,res){
 
 //render the sign up page
 module.exports.signUp = function(req,res){
-
+    //if user is signed in then user cannot go to the sign up page
     if(req.isAuthenticated()){
         return res.redirect('/users/profile');
     }
@@ -111,6 +130,7 @@ module.exports.create = function(req,res){
             return;
         }
 
+        //if current user is not in database, so it means he is unique. add his id 
         if(!user){
             User.create(req.body , function(err,user){
                 if(err){
@@ -138,6 +158,11 @@ module.exports.createSession = function(req,res){
 }
 
 module.exports.destroySession = function(req,res){
+    /*Passport exposes a logout() function on req that can be called from any 
+    route handler which needs to terminate a login session.
+    Invoking logout() will remove the req.user property and clear the login session 
+    */ 
+    
     req.logout();
     req.flash('success' , 'You have Logged out!');
     return res.redirect('/');
