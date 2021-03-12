@@ -39,7 +39,7 @@ module.exports.destroy = async function(req,res){
         //.id means converting the object id into string
         //if post exist
         //check whether the user who is deleting the post is the same user who has written the post
-        //if(post.user == req.user.id){
+        if(post.user == req.user.id){
         //delete the post and the comment also from that post
              post.remove();
 
@@ -56,11 +56,13 @@ module.exports.destroy = async function(req,res){
             });
             
         
-        //if user didn't match
-        // else{
-        //     req.flash('error', 'You cannot delete this post!');
-        //     return res.redirect('back');
-        // }
+       // if user didn't match
+        }else{
+            //since user is not matching
+            return res.json(401, {
+                message: "You cannot delete this post!"
+            });
+        }
 
     }
     catch(err){
