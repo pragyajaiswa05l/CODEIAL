@@ -8,13 +8,13 @@ const { countDocuments } = require('../models/user');
 
 //this is an another way of exporting a method
 exports.newComment =(comment) => {
-    console.log('inside newComment mailer');
+    let htmlString = nodeMailer.renderTemplate({comment: comment},'/comments/new_comment.ejs');
 
     nodeMailer.transporter.sendMail({
-        from: 'prag05jaiswal@gmail.com',
+        from: 'jaiskajal05@gmail.com',
         to: comment.user.email,
         subject: "New Comment Published",
-        html: '<h1>Yup, your comment is now published!'
+        html: htmlString
     }, (err, info) =>{
         if(err){
             console.log('Error in sending mail', err);
