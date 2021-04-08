@@ -21,7 +21,7 @@ exports.newComment =(comment) => {
             return;
         }
 
-        console.log('Mail deliver' , info);
+      //  console.log('Mail deliver' , info);
         return;
     });
 }
