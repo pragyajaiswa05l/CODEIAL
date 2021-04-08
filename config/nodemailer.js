@@ -2,7 +2,7 @@ const nodemailer = require("nodemailer");
 const ejs = require('ejs');
 const path = require('path');
 
-//this is the part which sends the email
+//this is the part which sends the email(this is the part which defines how the communication is going to take place)
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
@@ -30,7 +30,7 @@ let renderTemplate = (data, relativePath) => {
     return mailHTML;
 }
 
-
+//exporting two keys
 module.exports = {
     transporter: transporter,
     renderTemplate: renderTemplate

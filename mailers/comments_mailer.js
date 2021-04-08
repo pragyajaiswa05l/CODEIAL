@@ -1,5 +1,5 @@
 const nodeMailer = require('../config/nodemailer');
-const { countDocuments } = require('../models/user');
+//const { countDocuments } = require('../models/user');
 
 //need to create a function which will send that mail
 
@@ -11,17 +11,17 @@ exports.newComment =(comment) => {
     let htmlString = nodeMailer.renderTemplate({comment: comment},'/comments/new_comment.ejs');
 
     nodeMailer.transporter.sendMail({
-        from: 'jaiskajal05@gmail.com',
+        from: 'prag05jaiswal@gmail.com',
         to: comment.user.email,
         subject: "New Comment Published",
         html: htmlString
-    }, (err, info) =>{
+    }, (err, info) =>{              //call back function
         if(err){
             console.log('Error in sending mail', err);
             return;
         }
 
-        console.log('Message sent' , info);
+        console.log('Mail deliver' , info);
         return;
     });
 }
